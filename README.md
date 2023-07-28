@@ -1,15 +1,22 @@
 # ![chartjs-gauge logo](./samples/logo.svg) chartjs-gauge-v3
 
-Simple gauge chart for [Chart.js](https://www.chartjs.org/) >= 3.6.0?
+## Simple gauge chart for [Chart.js](https://www.chartjs.org/) >= 3.6.0?
 
+Fork of the [chartjs-gauge-v3](https://github.com/haiiaaa/chartjs-gauge), itself:
 Fork of the [chartjs-gauge](https://github.com/haiiaaa/chartjs-gauge).
+
+## Compatibility
+
+Chart.js V3 (not compatible with Chart.js >= 4.0.0!)
 
 ## Samples
 
 - [Gauge Chart](samples/gauge.html)
-- [Gauge Chart like clock?!](samples/gauge-clock.html)
 - [Gauge Chart with datalabels plugin](samples/gauge-datalabels.html)
 - [Gauge Chart with datalabels plugin displaying labels](samples/gauge-datalabels-labels.html)
+- NEW [Gauge Chart like speedmeter](samples/gauge-speedometer.html)
+
+![speedometer](./samples/speedometer.png)
 
 ## Install
 

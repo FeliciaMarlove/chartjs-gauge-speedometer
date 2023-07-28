@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<title>Gauge Chart</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.1.0/chart.js"></script>
+	<script src="../dist/index.js"></script>
+	<script>Chart.controllers.guage || document.write('<script src="https://unpkg.com/chartjs-gauge-v3/dist/index.js"><\/script>')</script>
+	<style>
+		canvas {
+			-moz-user-select: none;
+			-webkit-user-select: none;
+			-ms-user-select: none;
+		}
+	</style>
+</head>
+
+<body>
+
+<div class="content">
+	<a href="..">Home</a>
+
+		<div id="canvas-holder" style="width:100%">
+			<canvas id="chart" style="height: 500px; width: 500px;"></canvas>
+		</div>
+		<script>
+			const CHART_COLORS = {
+				red: "#ff6384",
+				orange: "#ff9f40",
+				yellow: "#ffcd56",
+				green: "#4bc0c0",
+				grey: "#c9cbcf",
+				white: '#F0F0F0',
+				black: '#404244',
+			};
+
+			let min = 0
+			let currentValue = 110
+			let max = 250
+			const thresholds = [...Array(50, 80, 130, 200, max)];
+			const actualValues = [...Array(min, currentValue, max)];
+
+			function getValueColour() {
+				return currentValue < thresholds[0] || currentValue > thresholds[3] ? CHART_COLORS.red
+					: currentValue < thresholds[1] || currentValue > thresholds [2] ? CHART_COLORS.orange
+						: CHART_COLORS.green
+
+			}
+
+			let valueColor = getValueColour()
+
+			var config = {
+				type: 'gauge',
+				data: {
+					datasets: [{
+						data: thresholds,
+						backgroundColor: [CHART_COLORS.red, CHART_COLORS.orange, CHART_COLORS.green, CHART_COLORS.orange, CHART_COLORS.red],
+						cutout: '85%',
+						weight: 4, // thickness
+						rotation: -90,
+						circumference: 180,
+						needle: false,
+						valueLabel: {
+							display: false
+						}
+					}, {
+						data: actualValues,
+						value: currentValue,
+						backgroundColor: [CHART_COLORS.grey, valueColor],
+						cutout: '60%',
+						weight: 8, // thickness
+						rotation: -90,
+						circumference: 180,
+						needle: {
+							color: CHART_COLORS.black,
+							length: '95%',
+							width: '14%',
+							radius: '7%',
+						},
+						valueLabel: {
+							backgroundColor: valueColor,
+							offsetY: 0,
+							offsetX: 70,
+						}
+					}]
+				},
+				options: {
+					responsive: true,
+					valueLabel: {
+						font: {
+							size: 32,
+						},
+						backgroundColor: CHART_COLORS.black,
+						color: CHART_COLORS.white,
+					}
+				}
+			};
+
+			window.onload = function () {
+				var ctx = document.getElementById('chart').getContext('2d');
+				window.myGauge = new Chart(ctx, config);
+			};
+
+			function updateGauge() {
+				const newValue = Math.floor(Math.random() * (max - min + 1) + min)
+				actualValues[1] = newValue
+				currentValue = newValue
+				config.data.datasets[1].data[1] = newValue
+				config.data.datasets[1].value = newValue
+				valueColor = getValueColour()
+				config.data.datasets[1].valueLabel.backgroundColor = valueColor
+				config.data.datasets[1].backgroundColor[1] = valueColor
+				window.myGauge.update()
+			}
+
+		</script>
+	</div>
+
+	<button onclick="updateGauge()">
+		Change current value
+	</button>
+
+</body>
+
+</html>
